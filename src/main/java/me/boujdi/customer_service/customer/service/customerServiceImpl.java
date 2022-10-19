@@ -5,11 +5,11 @@ import me.boujdi.customer_service.customer.DTO.CustomerResponseDTO;
 import me.boujdi.customer_service.customer.Mapper.CustomerMapper;
 import me.boujdi.customer_service.customer.entity.Customer;
 import me.boujdi.customer_service.customer.repository.CustomerRepository;
-import org.mapstruct.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -25,7 +25,7 @@ public class customerServiceImpl implements CustomerService{
 
     @Override
     public CustomerResponseDTO save(CustomerRequestDTO customerRequestDTO) {
-       Customer customer = customerMapper.customerResponseDtoTOCustomer(customerRequestDTO);
+       Customer customer = customerMapper.customerRequestDtoTOCustomer(customerRequestDTO);
        Customer savedCustomer=customerRepository.save(customer);
        CustomerResponseDTO customerResponseDTO=customerMapper.customerToCustomerResponseDTO(savedCustomer);
     return  customerResponseDTO;
@@ -33,16 +33,24 @@ public class customerServiceImpl implements CustomerService{
 
     @Override
     public CustomerResponseDTO getCustomer(String Id) {
-        return null;
+        Customer customer=customerRepository.findById(Id).orElseThrow(()->new RuntimeException("customer not found"));
+        CustomerResponseDTO customerResponseDTO=customerMapper.customerToCustomerResponseDTO(customer);
+        return customerResponseDTO;
     }
 
     @Override
     public CustomerResponseDTO update(CustomerRequestDTO customerRequestDTO) {
-        return null;
+        Customer customer=customerMapper.customerRequestDtoTOCustomer(customerRequestDTO);
+        Customer updatedCustomer=customerRepository.save(customer);
+        CustomerResponseDTO customerResponseDTO = customerMapper.customerToCustomerResponseDTO(updatedCustomer);
+        return customerResponseDTO;
     }
 
     @Override
-    public CustomerResponseDTO listCustomers() {
-        return null;
+    public List<CustomerResponseDTO> listCustomers() {
+
+        return customerRepository.findAll().stream()
+                .map(customer -> customerMapper.customerToCustomerResponseDTO(customer))
+                .collect(Collectors.toList());
     }
 }
