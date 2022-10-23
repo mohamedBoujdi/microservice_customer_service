@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,10 +26,11 @@ public class customerServiceImpl implements CustomerService{
 
     @Override
     public CustomerResponseDTO save(CustomerRequestDTO customerRequestDTO) {
-       Customer customer = customerMapper.customerRequestDtoTOCustomer(customerRequestDTO);
-       Customer savedCustomer=customerRepository.save(customer);
-       CustomerResponseDTO customerResponseDTO=customerMapper.customerToCustomerResponseDTO(savedCustomer);
-    return  customerResponseDTO;
+                    Customer customer = customerMapper.customerRequestDtoTOCustomer(customerRequestDTO);
+        Customer customersaved = customerRepository.save(customer);
+        CustomerResponseDTO customerResponseDTO = customerMapper.customerToCustomerResponseDTO(customersaved);
+        System.out.println("******* customerToCustomerResponseDTO: "+customerResponseDTO+" ********");
+        return  customerResponseDTO;
     }
 
     @Override

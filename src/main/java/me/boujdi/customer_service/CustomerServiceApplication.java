@@ -14,11 +14,17 @@ public class CustomerServiceApplication {
         SpringApplication.run(CustomerServiceApplication.class, args);
     }
     @Bean
-    CommandLineRunner start(CustomerService customerService){
-        return args -> {
-            customerService.save(new CustomerRequestDTO("76GY", "John", "xxxxxx@gmail.com"));
-            customerService.save(new CustomerRequestDTO("57BK", "Farid", "YYYYY@gmail.com"));
+    CommandLineRunner start(CustomerService customerService) {
+        return new CommandLineRunner() {
+            @Override
+            public void run(String... args) throws Exception {
+
+                customerService.save(new CustomerRequestDTO("76GY", "John", "xxxxxx@gmail.com"));
+                customerService.save(new CustomerRequestDTO("57BK", "Farid", "YYYYY@gmail.com"));
+                customerService.save(new CustomerRequestDTO("98JH", "Mohamed", "llaj@gmail.com"));
+                customerService.save(new CustomerRequestDTO("45GH", "Ali", "ibdig@hotmail.com"));
+                customerService.save(new CustomerRequestDTO("78JH", "Omar", "ycuud@mail.com"));
+            }
         };
     }
-
 }
