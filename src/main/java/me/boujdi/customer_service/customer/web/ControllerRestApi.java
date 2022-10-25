@@ -26,11 +26,22 @@ public ResponseEntity<List<CustomerResponseDTO>> allCustomers(){
 public ResponseEntity<CustomerResponseDTO> getCustomer(@PathVariable(name = "id") String customerID){
     return new ResponseEntity<>(customerService.getCustomer(customerID), HttpStatus.OK);
 }
-@PostMapping(path = "/customers")
+@PostMapping(path = "/customer/add")
 public ResponseEntity<CustomerResponseDTO> save(@RequestBody CustomerRequestDTO customerRequestDTO){
     customerRequestDTO.setId(UUID.randomUUID().toString());
     CustomerResponseDTO  saved = customerService.save(customerRequestDTO);
     return new ResponseEntity<>(saved,HttpStatus.CREATED);
+}
+@PutMapping(path = "/customers/up/{id}")
+public ResponseEntity<CustomerResponseDTO> updateCustomer(@PathVariable(name = "id") String id, @RequestBody CustomerRequestDTO customerRequestDTO) {
+    customerRequestDTO.setId(id);
+    CustomerResponseDTO updated = customerService.update(customerRequestDTO);
+    return new ResponseEntity<>(updated, HttpStatus.OK);
+}
+@DeleteMapping(path = "/customers/d/{id}")
+public ResponseEntity<Void> deleteCustomer(@PathVariable(name = "id") String id){
+    customerService.deleteCustomer(id);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 }
 
 

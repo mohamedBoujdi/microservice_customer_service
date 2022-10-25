@@ -41,18 +41,25 @@ public class customerServiceImpl implements CustomerService{
     }
 
     @Override
+    public List<CustomerResponseDTO> listCustomers() {
+
+        return customerRepository.findAll().stream()
+                .map(customer -> customerMapper.customerToCustomerResponseDTO(customer))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public CustomerResponseDTO update(CustomerRequestDTO customerRequestDTO) {
         Customer customer=customerMapper.customerRequestDtoTOCustomer(customerRequestDTO);
         Customer updatedCustomer=customerRepository.save(customer);
         CustomerResponseDTO customerResponseDTO = customerMapper.customerToCustomerResponseDTO(updatedCustomer);
         return customerResponseDTO;
     }
-
     @Override
-    public List<CustomerResponseDTO> listCustomers() {
-
-        return customerRepository.findAll().stream()
-                .map(customer -> customerMapper.customerToCustomerResponseDTO(customer))
-                .collect(Collectors.toList());
+    public void deleteCustomer(String id) {
+        customerRepository.deleteById(id);
+        if (customerRepository.findById(id).isPresent()) {
+            throw new RuntimeException("customer not deleted");
+        }
     }
 }
