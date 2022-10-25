@@ -22,11 +22,11 @@ public ControllerRestApi(CustomerService customerService) {
 public ResponseEntity<List<CustomerResponseDTO>> allCustomers(){
     return new ResponseEntity<>(customerService.listCustomers(), HttpStatus.OK);
 }
-@GetMapping(path = "/customer/{id}")
+@GetMapping(path = "/customers/{id}")
 public ResponseEntity<CustomerResponseDTO> getCustomer(@PathVariable(name = "id") String customerID){
     return new ResponseEntity<>(customerService.getCustomer(customerID), HttpStatus.OK);
 }
-@PostMapping(path = "/customer")
+@PostMapping(path = "/customers")
 public ResponseEntity<CustomerResponseDTO> save(@RequestBody CustomerRequestDTO customerRequestDTO){
     customerRequestDTO.setId(UUID.randomUUID().toString());
     CustomerResponseDTO  saved = customerService.save(customerRequestDTO);
