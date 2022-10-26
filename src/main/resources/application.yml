@@ -13,7 +13,10 @@ spring:
       enabled: true
 Eureka:
   instance:
-    prefer-ip-address: true # does not work with localhost
-
-
+    prefer-ip-address: true # does not work with localhost:
+management:
+  endpoint:
+    web:
+      exposure:
+         include: "*" # expose all endpoints
 
